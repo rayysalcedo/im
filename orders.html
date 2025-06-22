@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cakeverse • Orders</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+ /* minimal table styling */
+ table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:1rem}
+ th,td{padding:.45rem;border-bottom:1px solid rgba(255,255,255,.15);text-align:center}
+ h2{margin-top:2.4rem}
+</style>
+</head>
+<body>
+
+<!-- backdrop -->
+<video id="bgVideo" autoplay muted loop playsinline>
+  <source src="media/galaxy.mp4" type="video/mp4">
+</video>
+
+<header id="mainNav">
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="orders.html" id="ordersLink">Orders</a>
+    <a href="login.html"  id="loginLink">Login</a>
+  </nav>
+</header>
+
+<section style="max-width:1200px;margin:0 auto">
+  <h1>🗂 Order Management</h1>
+
+  <h2>Ongoing</h2>
+  <table id="ongoingTbl"><thead></thead><tbody></tbody></table>
+
+  <h2>Completed</h2>
+  <table id="doneTbl"><thead></thead><tbody></tbody></table>
+</section>
+
+<script>
+/* 1 ▸ guard: anyone not logged-in goes to login page */
+const role = sessionStorage.getItem('cv_role');           // 'admin' or 'customer'
+if (!role) location.replace('login.html');
+
+/* 2 ▸ pull orders */
+const ORDERS = JSON.parse(localStorage.getItem('orders') || '[]');
+
+/* 3 ▸ build table headers */
+const COLS = ['ID','Customer','Address','Delivery','Payment','Details','Total','Status'];
+const makeHead = table => {
+  table.querySelector('thead').innerHTML = '<tr>' + COLS.map(c=>`<th>${c}</th>`).join('') + '</tr>';
+};
+makeHead($('#ongoingTbl')); makeHead($('#doneTbl'));
+
+/* 4 ▸ populate rows — customers see ONLY their orders & NO “Mark Done” button */
+const user = sessionStorage.getItem('cv_user');
+ORDERS
+  .filter(o => role === 'admin' || o.owner === user)       // restrict view for customers
+  .forEach(o => {
+    const canFinish = role === 'admin' && o.status === 'ongoing';
+    const cellText  =  canFinish
+        ? `<button class="table-btn" onclick="finish(${o.id})">Mark&nbsp;Done</button>`
+        : (o.status === 'ongoing' ? 'In&nbsp;Progress' : 'Completed');
+
+    const row = `<tr>
+      <td>${o.id}</td><td>${o.customer}</td><td>${o.address}</td>
+      <td>${o.date} (${o.type})</td><td>${o.payment}</td>
+      <td>${o.summary}</td><td>${o.total}</td><td>${cellText}</td>
+    </tr>`;
+
+    const bucket = o.status === 'ongoing' ? '#ongoingTbl tbody' : '#doneTbl tbody';
+    document.querySelector(bucket).insertAdjacentHTML('beforeend', row);
+});
+
+/* 5 ▸ admin-only helper */
+function finish(id){
+  if (role !== 'admin') return;                            // double-safety
+  const idx = ORDERS.findIndex(o => o.id === id);
+  if (idx > -1){
+    ORDERS[idx].status = 'completed';
+    localStorage.setItem('orders', JSON.stringify(ORDERS));
+    location.reload();
+  }
+}
+
+/* 6 ▸ tiny nav niceties */
+if (role !== 'admin') $('#ordersLink').textContent = 'My Orders';
+if (sessionStorage.getItem('cv_user')){
+  $('#loginLink').textContent = 'Logout';
+  $('#loginLink').href = '#';
+  $('#loginLink').onclick = () => { sessionStorage.clear(); location.href = 'login.html'; };
+}
+
+/* helper */
+function $(sel){ return document.querySelector(sel); }
+</script>
+</body>
+</html>

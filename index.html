@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cakeverse • Galactic Orders</title>
+
+  <!-- Font-Awesome for icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ★ MOVING GALAXY VIDEO BACKGROUND -->
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="media/galaxy.mp4" type="video/mp4">
+  </video>
+
+  <!-- ───── HERO / HEADER ───── -->
+  <section id="hero">
+    <header>
+      <div class="logo-wrap">
+        <img src="assets/logo.png" alt="Cakeverse logo">
+        <span class="brand">Cakeverse</span>
+      </div>
+
+<!-- REPLACE the current <nav> block with this one -->
+<nav id="mainNav">
+   <a href="index.html">Home</a>
+   <a href="orders.html" id="ordersLink">Orders</a>
+   <a href="#">About Us</a>
+   <a href="login.html"  id="loginLink">Login</a>
+</nav>
+
+
+    </header>
+
+    <div class="hero-text">
+      <h2>Galaxy-Inspired Cakes.<br>Infinite Possibilities.</h2>
+      <p>Bake your way across the universe with premium ingredients and cosmic flair.</p>
+      <button id="startOrder">Start Ordering</button>
+    </div>
+  </section>
+
+  <!-- ───── STEP 1 · CUSTOMISE ───── -->
+  <section id="step1" class="step hidden">
+    <h2>🛠 Customise Your Cake</h2>
+
+    <form id="customForm" class="white-panel">
+
+      <!-- DESIGN (cards injected by JS) -->
+      <div class="option-block">
+        <h3><i class="fa-solid fa-palette"></i> Design <small>(choose 1)</small></h3>
+        <div class="card-grid" id="designGrid"></div>
+      </div>
+
+      <!-- LAYERS (replace the whole previous block) -->
+<div class="option-block">
+  <h3><i class="fa-solid fa-layer-group"></i> Layers <small>(choose 1)</small></h3>
+
+  <div class="card-grid">
+
+<!-- 1-layer -->
+<label class="card radio">
+  <input type="radio" name="layers" value="1" required>
+  <span class="picture">
+    <div class="layer-icon x1">
+      <span></span><span></span><span></span>
+    </div>
+  </span>
+  <span class="text">1 Layer<br><b>ᘜ10</b></span>
+</label>
+
+<!-- 2-layer -->
+<label class="card radio">
+  <input type="radio" name="layers" value="2">
+  <span class="picture">
+    <div class="layer-icon x2">
+      <span></span><span></span><span></span>
+    </div>
+  </span>
+  <span class="text">2 Layers<br><b>ᘜ18</b></span>
+</label>
+
+<!-- 3-layer -->
+<label class="card radio">
+  <input type="radio" name="layers" value="3">
+  <span class="picture">
+    <div class="layer-icon x3">
+      <span></span><span></span><span></span>
+    </div>
+  </span>
+  <span class="text">3 Layers<br><b>ᘜ25</b></span>
+</label>
+
+  </div>
+</div>
+
+      <!-- FLAVOR  (replace the old cards) -->
+<div class="option-block">
+  <h3><i class="fa-solid fa-ice-cream"></i> Flavor <small>(choose 1)</small></h3>
+
+  <div class="card-grid">
+
+    <label class="card radio">
+      <input type="radio" name="flavor" value="Strawberry" required>
+      <span class="picture"><img src="assets/strawberry.png" alt="Strawberry"></span>
+      <span class="text">Strawberry<br><b>ᘜ6</b></span>
+    </label>
+
+    <label class="card radio">
+      <input type="radio" name="flavor" value="Matcha">
+      <span class="picture"><img src="assets/matcha.png" alt="Matcha"></span>
+      <span class="text">Matcha<br><b>ᘜ7</b></span>
+    </label>
+
+    <label class="card radio">
+      <input type="radio" name="flavor" value="Chocolate">
+      <span class="picture"><img src="assets/chocolate.png" alt="Chocolate"></span>
+      <span class="text">Chocolate<br><b>ᘜ6</b></span>
+    </label>
+
+    <label class="card radio">
+      <input type="radio" name="flavor" value="Vanilla">
+      <span class="picture"><img src="assets/vanilla.png" alt="Vanilla"></span>
+      <span class="text">Vanilla<br><b>ᘜ5</b></span>
+    </label>
+
+  </div>
+</div>
+
+<!-- TOPPINGS  (replace the old cards) -->
+<div class="option-block">
+  <h3><i class="fa-solid fa-circle-plus"></i> Toppings <small>(ᘜ3 each – choose any)</small></h3>
+
+  <div class="card-grid">
+
+    <label class="card checkbox">
+      <input type="checkbox" value="Sprinkles">
+      <span class="picture"><img src="assets/sprinkles.png"  alt="Sprinkles"></span>
+      <span class="text">Sprinkles</span>
+    </label>
+
+    <label class="card checkbox">
+      <input type="checkbox" value="Rocket Candy">
+      <span class="picture"><img src="assets/rocketcandy.png" alt="Rocket Candy"></span>
+      <span class="text">Rocket Candy</span>
+    </label>
+
+    <label class="card checkbox">
+      <input type="checkbox" value="Nuts">
+      <span class="picture"><img src="assets/nuts.png" alt="Nuts"></span>
+      <span class="text">Nuts</span>
+    </label>
+
+    <label class="card checkbox">
+      <input type="checkbox" value="Chips">
+      <span class="picture"><img src="assets/chips.png" alt="Chips"></span>
+      <span class="text">Chips</span>
+    </label>
+
+    <label class="card checkbox">
+      <input type="checkbox" value="Marshmallows">
+      <span class="picture"><img src="assets/marshmallows.png" alt="Marshmallows"></span>
+      <span class="text">Marshmallows</span>
+    </label>
+
+  </div>
+</div>
+
+      <div class="row between btn-row">
+        <button type="button" id="addToCart">Add to Cart</button>
+        <button type="button" id="checkout" disabled>Checkout →</button>
+      </div>
+    </form>
+
+    <!-- MINI-CART -->
+    <h3 class="cart-title">🛒 Current Order(s)</h3>
+    <ul id="cartList"></ul>
+  </section>
+
+  <!-- STEP 2 & 3 + feedback modal remain exactly as before -->
+  <section id="step2" class="step hidden">
+    <h2>📦 Delivery & Payment</h2>
+    <form id="infoForm">
+      <label>Customer Name <input name="customer" required></label>
+      <label>Address <textarea name="address" required></textarea></label>
+
+      <div class="row">
+        <p class="disclaimer" style="margin:.6rem 0;opacity:.8">
+  🚚  Delivery is made-to-order and usually arrives within <b>3-5 days</b>.
+</p>
+        <label>Delivery Type
+          <select name="type" required>
+            <option value="pickup">Pickup</option>
+            <option value="standard">Standard</option>
+            <option value="warp">Warp Express</option>
+          </select>
+        </label>
+      </div>
+
+      <label>Payment Method
+        <select name="payment" required>
+          <option value="credits">Galactic Credits</option>
+          <option value="card">Interstellar Card</option>
+          <option value="crypto">Cosmo-Coin</option>
+        </select>
+      </label>
+
+      <div class="row between">
+        <button type="button" id="back1">← Back</button>
+        <button type="submit">Place Order</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="step3" class="step hidden">
+    <h2>✅ Receipt</h2>
+    <div id="receiptBox"></div>
+    <div class="row between">
+      <button id="newOrder">New Order</button>
+      <button id="printReceipt"><i class="fa-solid fa-print"></i> Print</button>
+    </div>
+  </section>
+
+  <!-- FEEDBACK -->
+  <div id="feedbackModal" class="modal hidden">
+    <div class="modal-card">
+      <h3>Rate Your Experience</h3>
+      <div class="stars" id="starRow"></div>
+      <textarea id="feedbackText" rows="3" placeholder="Tell us more…"></textarea>
+      <button id="submitFeedback">Submit</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

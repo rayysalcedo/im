@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cakeverse • Login</title>
+
+  <!-- shared palette / fonts -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- ─── page-specific CSS ─── -->
+  <style>
+  /* centre the login panel */
+  body{
+    display:flex;justify-content:center;align-items:center;
+    min-height:100vh;margin:0;
+  }
+
+  /* floating glass-panel card */
+  .login-card{
+    width:320px;              /* ✦ the bit that collapsed to 100% before */
+    padding:2.2rem;
+    border-radius:12px;
+    background:rgba(255,255,255,.87);
+    backdrop-filter:blur(14px);
+  }
+
+  .login-card h1{margin-bottom:1.4rem;text-align:center;letter-spacing:1px}
+  .login-card label{display:block;margin:.8rem 0;font-size:.9rem}
+  .login-card input{
+    width:100%;padding:.52rem;border-radius:4px;border:none;
+    background:rgba(114,113,113,.97);color:var(--text)
+  }
+  .login-card button{margin-top:1.2rem;width:100%}
+  .small{font-size:.8rem;text-align:center;margin-top:1rem}
+  .small a{color:var(--accent)}
+  .error{color:#ff6961;font-size:.8rem;text-align:center;margin-top:.5rem}
+  .hidden{display:none}
+  </style>
+</head>
+<body>
+
+  <!-- ★ galaxy background (same across pages) -->
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="media/galaxy.mp4" type="video/mp4">
+  </video>
+
+  <!-- login / signup card -->
+  <div class="login-card white-panel">
+    <h1>Cakeverse</h1>
+
+    <form id="authForm">
+      <input type="hidden" id="mode" value="login">
+      <label>Username <input id="user" autocomplete="username" required></label>
+      <label>Password <input id="pass" type="password" autocomplete="current-password" required></label>
+      <button type="submit">Login</button>
+      <p id="err" class="error hidden">Invalid credentials</p>
+    </form>
+
+    <p class="small">No account? <a href="#" id="signupLink">Sign up</a></p>
+  </div>
+
+<script>
+/* ---------- storage helpers ---------- */
+const USERS_KEY = 'cv_users';
+const users     = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+const $         = sel => document.querySelector(sel);
+
+/* ---------- toggle to sign-up mode ---------- */
+signupLink.onclick = e => {
+  e.preventDefault();
+  $('#mode').value = 'signup';
+  signupLink.outerHTML =
+    'Have an account? <a href="#" onclick="location.reload()">Log in</a>';
+  $('#authForm button').textContent = 'Sign Up';
+};
+
+/* ---------- login / sign-up handler ---------- */
+authForm.onsubmit = e => {
+  e.preventDefault();
+
+  const u = $('#user').value.trim();
+  const p = $('#pass').value.trim();
+  const isLogin = $('#mode').value === 'login';
+
+  if (isLogin) {
+    /* ---- LOGIN ---- */
+    if (!(u in users) || users[u].pass !== p) { $('#err').classList.remove('hidden'); return; }
+
+    /* ★ always treat the “admin” account as admin */
+    if (u === 'admin' && users[u].role !== 'admin') {
+      users[u].role = 'admin';
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    }
+
+  } else {
+    /* ---- SIGN-UP ---- */
+    if (u in users) { $('#err').textContent = 'User exists'; $('#err').classList.remove('hidden'); return; }
+
+    users[u] = { pass:p, role: (u === 'admin' ? 'admin' : 'customer') };
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+
+  /* ---- SESSION ---- */
+  sessionStorage.setItem('cv_user', u);
+  sessionStorage.setItem('cv_role', users[u].role || 'customer');
+  location.href = 'index.html';
+};
+</script>
+</body>
+</html>
